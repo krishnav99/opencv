@@ -1,0 +1,38 @@
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    background-color: whitesmoke;
+    font-size: 18px;
+}
+
+#input, #output, #form, #canvas-input{
+    display: none;
+}
+
+#status{
+    margin-top:10%;
+}
+
+canvas{
+    max-height: 300px;
+    max-width: auto;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    margin: 20px 0px;
+}
+
+button{
+    font-size: 18px;
+}
+
+.output{
+    display: none;
+}
+
+form{
+    margin-top: 50px;
+}
+
+form input{
+    width: 100px;
+}
+

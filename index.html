@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Resizing using OpenCV.js</title>
+  <link rel="stylesheet" href="main.css">
+</head>
+<body>
+  <h1>Resize an Image using Open CV</h1>
+  <p id="status">OpenCV.js is loading...</p>
+ 
+    <div id="input">
+      <canvas id="canvas-input"></canvas>
+      <br>
+      <input type="file" id="file-input" name="file" hidden />
+      <button type="button" id="upload-button">Upload</button>
+    </div>
+  
+    <div id="form">
+      <form id="resize-form">
+        <label>Height: </label>
+        <input type="number" id="height" oninput="validity.valid|| (value='');" required>
+        <label>Width: </label>
+        <input type="number" id="width"  oninput="validity.valid|| (value='');" required>
+        <button>Resize</button>
+      </form>
+    <div>
+      
+    <div id="output">
+      <canvas id="canvas-output"></canvas>
+      <br>
+      <a href="" download="resized-image.jpg" onclick="download_image(this);">
+        <button>Download</button>
+      </a> 
+    </div>
+  
+ 
+  
+  <script type="text/javascript">
+
+    //Trigger the file input virtually using the custom upload button
+    const inputBtn = document.getElementById("file-input");
+    const uploadBtn = document.getElementById("upload-button");
+    uploadBtn.addEventListener("click", function(){
+          inputBtn.click();
+    });
+
+    
+    //get the image source
+    let img = document.createElement("img",500,500)
+    inputBtn.addEventListener('change', (e) => {
+        img.src =  URL.createObjectURL(e.target.files[0]);  
+      })
+    
+    //Drawing the image on the input-canvas
+    img.onload = function(){
+        let mat = cv.imread(img);
+        cv.imshow('canvas-input', mat);
+        document.getElementById('canvas-input').style.display = "inline-block";
+        document.getElementById('form').style.display = "block";
+      }
+    
+    //Resizing the image
+    const form = document.getElementById("resize-form");
+    form.onsubmit = function(e){
+      e.preventDefault();
+      let src = cv.imread('canvas-input');
+      let dst = new cv.Mat();
+      let height = parseInt(document.getElementById("height").value);
+      let width = parseInt(document.getElementById("width").value);
+      let dsize = new cv.Size(height, width);
+      cv.resize(src, dst, dsize, 0, 0, cv.INTER_AREA);
+      cv.imshow('canvas-output',dst)
+      document.getElementById('output').style.display = "block";
+    }
+    
+    //downloading the output image
+    var download_image = function(e){
+      let canvas = document.getElementById("canvas-output");
+      var image = canvas.toDataURL("image/jpg");
+      e.href = image;
+    }
+    
+    function onOpenCvReady() {
+      document.getElementById('status').style.display = "none";
+      document.getElementById('input').style.display  = "block"
+    }
+  </script>
+<script async src="opencv.js" onload="onOpenCvReady();" type="text/javascript"></script>
+</body>
+</html>
